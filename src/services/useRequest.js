@@ -33,7 +33,7 @@ const useRequest = () => {
         if(collect !== ''){
             str += `&qf=proxy_dc_creator%3A${collect}`
         }
-        const res = await request(`https://api.europeana.eu/record/v2/search.json?query=${str}${tp}&rows=10&sort=score&wskey=priturri`)
+        const res = await request(`https://api.europeana.eu/record/v2/search.json?query=${str}${tp}&rows=10&sort=timestamp_created%2Basc&wskey=priturri`)
         console.log(`https://api.europeana.eu/record/v2/search.json?query=${str}${tp}&rows=10&text_fulltext=true&wskey=priturri`)
         return res
     }
