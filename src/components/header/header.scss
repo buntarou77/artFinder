@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders:opsz,wght@10..72,100..900&family=Imbue:opsz,wght@10..100,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Sora:wght@100..800&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+body {
+    font-family:'Imbue';
+    margin: 0 auto;
+    background-color:  #2C2C2C;
+}
+a{
+    text-decoration: none;
+}
+header {
+    background: linear-gradient(180deg, rgba(0, 0, 0), rgba(44, 44, 44));
+    height: 190px;
+    margin-bottom: -80px;
+    padding: 20px 0;
+    color: #FFFFFF;
+
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1230px;
+        margin: 0 auto;
+        padding: 0 15px;
+        display: flex;
+        flex-direction: column;
+    }
+    .firs_path{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        .header_logo{
+            width: 200px;
+            flex-flow: nowrap row;
+        }
+    }
+    nav{
+        display: flex;
+        justify-content: center;
+        margin-left: 100px;
+        .nav_list{
+            display: flex;
+            align-items:center;
+        }
+    }
+    .header_logo {
+        h1 {
+            font-size: 36px;
+            font-weight: bold;
+
+            span {
+                color: #800020;
+            }
+        }
+    }
+
+    .nav_list {
+        list-style-type: none;
+        display: flex;
+        gap: 80px;
+
+        li {
+            a {
+                color: #ffffff;
+                text-decoration: none;
+                font-weight: 300;
+                font-size: 30px;
+                transition: color 0.3s;
+
+                &:hover {
+                    color:  #800020;
+                }
+            }
+        }
+    }
+
+    
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    header {
+        .nav_list {
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .header_search {
+            flex-direction: column;
+            width: 100%;
+
+            input {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    }
+}
