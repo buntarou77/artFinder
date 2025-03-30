@@ -30,6 +30,7 @@ header {
         display: flex;
         flex-direction: row;
         .header_logo{
+            cursor:default;
             width: 200px;
             flex-flow: nowrap row;
         }
@@ -77,7 +78,6 @@ header {
     
 }
 
-/* Адаптивность */
 @media (max-width: 768px) {
     header {
         .nav_list {

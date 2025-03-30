@@ -1,10 +1,11 @@
 import './SerchPage.scss'
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef} from 'react';
 import useDebounce from '../../services/useDebounce';
 import useRequest from '../../services/useRequest';
 import { Link } from 'react-router-dom';
+import {CSSTransition, TransitionGroup} from 'react-transition-group';
 const Serch = () =>{
-    const {getInfoStartsWith} = useRequest();
+    const {getInfoStartsWith, loading} = useRequest();
     const [state, setState] = useState('')
     const [data,setData] = useState([])
     const debounced = useDebounce(state, 500);
@@ -13,6 +14,7 @@ const Serch = () =>{
     const [timeStart, setTimeStart] = useState('');
     const [timeEnd, setTimeEnd] = useState('');
     const [collection, setCollection] = useState('');
+    const nodeRef = useRef(null);
     useEffect(()=>{
         console.log(state)
         if(!state){
@@ -52,28 +54,48 @@ const Serch = () =>{
     function onChangeCollection(e){
         setCollection(e.target.value)
     }
-    const renderResults = useMemo(() => {
-        console.log(data.items)
-        if (data.length === 0) {
-            return null; 
+
+    let renderResults = useMemo(() => {
+        if (!data.items || data.items.length === 0) {
+          return null;
         }
-        return data.items.map((item) => {
-            if (!item) return null;
-            return (
-                <Link to={`/card${item.id}`}key={item.id}>
+        
+        return (
+          <TransitionGroup component="div" className="items">
+            {data.items.map((item) => {
+              if (!item) return null;
+              
+              return (
+                <CSSTransition
+                  key={item.id}
+                  timeout={200}
+                  in={true}
+                  classNames="fade"
+                  unmountOnExit
+                  nodeRef={nodeRef}
+                >
+                  <Link to={`/card${item.id}`}>
                     <div className='result_item'>
-                        <img src={item.edmPreview || require('../../services/noImage.png')} alt="cardImage" />
-                        <div className="info_text">
-                            <h1>{item.title[0]}</h1>
-                        </div>
+                      <img 
+                        src={item.edmPreview || require('../resources/noImage.png')} 
+                        alt="cardImage" 
+                      />
+                      <div className="info_text">
+                        <h1>{item.title?.[0] || 'Untitled'}</h1>
+                        <h2>{item.type}</h2>
+                      </div>
                     </div>
-                </Link>
-            );
-        });
-    }, [data]);
+                  </Link>
+                </CSSTransition>
+              );
+            })}
+          </TransitionGroup>
+        );
+      }, [data]);
     console.log(data)
     return(
         <div className="container">
+        <div className="search">
         <div className="header_search">
             <input 
             value={state}
@@ -82,7 +104,6 @@ const Serch = () =>{
              placeholder="Search for artworks..."
               aria-label="Search for artworks"
                />
-            <button type="submit">Search</button>
         </div>
         <div className="filters">
             <ul className='change_filters'>
@@ -109,7 +130,6 @@ const Serch = () =>{
             </ul>
         </div>
 
-        <div className="items">
             {renderResults}
         </div>
         </div>

@@ -1,0 +1,11 @@
+.Entity{
+    .container{
+        background-color: rgb(221, 220, 220);
+        border-radius: 5px;
+        height: 100%;
+    }
+    .info{
+        display: flex;
+        gap: 20px;
+    }
+}

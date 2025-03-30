@@ -1,13 +1,14 @@
 import './welcome.scss';
 import useRequest from '../../services/useRequest';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Spinner from '../spinner/Spinner';
 import {Link} from 'react-router-dom';
-
+import ErrorBoundary from '../errorBundary/ErrorBoundary'
 const Welcome = () => {
     const { getRecommendations, loading } = useRequest();
     const [recommendations, setRecommendations] = useState([]);
-    const [size, setSize] = useState(10);
+    const [size, setSize] = useState(1);
+    const [newItemLoading, setNewItemLoading] = useState(true)
     const fetchData = async (size) => {
         try {
             const data = await getRecommendations(size);
@@ -17,13 +18,12 @@ const Welcome = () => {
             return [];
         }
     };
-
     useEffect(() => {
         onRequest(size);
     }, []);
-
     const onRequest = async (elem) => {
         const data = await fetchData(elem);
+        setNewItemLoading(false)
         onRecommendationsLoaded(data);
     };
 
@@ -59,7 +59,7 @@ const Welcome = () => {
         if(title.length >= 150) title = `${title.slice(0, 150)}...`
         return (
             <Link to ={`/card${item.id}`} state={{preview: item.edmPreview}}>
-            <div className="element" key={item.id} onClick={()=> console.log(item.id)}>
+            <div className="element" key={item.id}>
                 {item.edmPreview && <img src={item.edmPreview} alt={item.title?.[1] || 'Artwork'} />}
                 <div className="element_info">
                     <h1 className='element_info-title'>{ title|| 'Untitled'}</h1>
@@ -72,26 +72,30 @@ const Welcome = () => {
             </Link>
         );
     });
-    console.log(recommendations.length)
-    console.log(items.length)
+
+    const Show = !loading ? {display: 'flex'} : {display: "none"}
+    
     return (
+        <ErrorBoundary>
+        {loading  && newItemLoading ? <div className="center"><Spinner/></div> :
         <section className="recommendations">
             <div className="container">
                 <h1>Your recommendations</h1>
                 <div className='recommendation_list'>
                     {items}
                 </div>
-                {loading ? <Spinner/> :
                 <div className="button-conatiner">
-                <button className='button_load' onClick={()=>loadMore()}>
-                <div className='button_load-text'>
-                    Load more
+                    <button className='button_load' style={Show}  onClick={()=>loadMore()}>
+                        <div className='button_load-text'>
+                            Load more
+                        </div>
+                    </button>
                 </div>
-            </button>
-            </div>}
             </div>
-        </section>
+        </section>}
+        </ErrorBoundary>
     );
+
 };
 
 export default Welcome;

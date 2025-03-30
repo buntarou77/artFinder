@@ -6,7 +6,7 @@
         justify-content: space-between;
         align-items: center;
         flex-direction: column;
-        width: 1300px;
+        width: 1320px;
         margin: 0 auto;
         padding: 0 15px;
         h1{
@@ -26,15 +26,19 @@
     flex-direction: column;
     border-radius: 4px;
     box-shadow: 0 4px 8px rgba(128, 127, 127, 0.2);
-    transition: transform 0.3s, box-shadow 0.3s;
     position: relative;
-    margin: 10px;
-    transform: translateZ(0);
-    position: relative;
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in forwards;
+    transition: all 0.3s ease-in-out;
+    border: 2px solid transparent;
+    
+    &.new-item {
+        animation: slideIn 0.5s ease-in forwards;
+    }
+    
     &:hover {
         border: 2px solid rgb(141, 0, 35);
-        transform: scale(1.01) translateZ(0);
-        margin: 9px;
+        transform: scale(1.01);
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
     }
      img{
@@ -68,6 +72,14 @@
             font-family: 'Sora';
             font-size: 12px;
         }
+    }
+}
+a {
+    text-decoration: none;
+    color: inherit;
+    outline: none;
+    &:focus {
+        outline: none;
     }
 }
 .button-conatiner{
@@ -105,3 +117,24 @@
         }
     }
 }
+
+.center{
+    justify-content: center;
+    display: flex;
+}
+.recommendation_list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+

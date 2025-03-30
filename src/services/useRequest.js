@@ -1,9 +1,8 @@
 import { useHttp } from '../hooks/useHttp';
-
 const useRequest = () => {
     const { request, loading } = useHttp();
     const _apiBase = 'https://api.europeana.eu'
-    const _apiKey = 'priturri';
+    const _apiKey = 'tuorenortaba';
     const getRecommendations = async (size) =>{
         const res = await request(`${_apiBase}/recommend/record/2021672/resource_document_mauritshuis_670?page=${size}&pageSize=10&seed=1&wskey=${_apiKey}`)
         return res.items
@@ -33,10 +32,18 @@ const useRequest = () => {
         if(collect !== ''){
             str += `&qf=proxy_dc_creator%3A${collect}`
         }
-        const res = await request(`https://api.europeana.eu/record/v2/search.json?query=${str}${tp}&rows=10&sort=timestamp_created%2Basc&wskey=priturri`)
-        console.log(`https://api.europeana.eu/record/v2/search.json?query=${str}${tp}&rows=10&text_fulltext=true&wskey=priturri`)
+        const res = await request(`https://api.europeana.eu/record/v2/search.json?query=${str}${tp}&rows=10&sort=timestamp_created%2Basc&wskey=${_apiKey}`)
+        console.log(`https://api.europeana.eu/record/v2/search.json?query=${str}${tp}&rows=10&text_fulltext=true&wskey=${_apiKey}`)
         return res
     }
-    return {getRecommendations, loading, getSingleCardInfo, getInfoStartsWith};
+    const getInfoEntity = async(str, type)=>{
+        const res = await request(`https://api.europeana.eu/entity/${type}/${str}?wskey=${_apiKey}`)
+        return res
+    }
+    const getEntityStartsWith= async(str, type)=>{
+        const res = request(`https://api.europeana.eu/entity/search?query=${str}&type=${type}&scope=europeana&lang=en&page=1&pageSize=10`)
+        return res
+    }
+    return {getRecommendations, loading, getSingleCardInfo, getInfoStartsWith, getInfoEntity, getEntityStartsWith};
 }
 export default useRequest;

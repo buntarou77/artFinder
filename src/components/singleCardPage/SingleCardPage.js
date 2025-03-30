@@ -83,6 +83,7 @@ const preview = location.state?.preview;
   (Array.isArray(cardData.title?.["@none"]) && cardData.title["@none"][0])  || value ||  "No title" ;
   console.log(cardData)
   return (
+    
     <div className="single_container" key={`${databaseId}/${elementId}`}>
       <div className="single_info">
         <img src={image || preview} alt="Artwork" />
